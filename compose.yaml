@@ -1,0 +1,27 @@
+services:
+  mysql:
+    image: mysql:8.0-oraclelinux8
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: root-password
+      MYSQL_DATABASE: user-hub_db
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker123
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-mysql-data:/var/lib/mysql
+    networks:
+      - dev-network
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "512M"
+
+volumes:
+  db-mysql-data:
+
+networks:
+  dev-network:
+    driver: bridge
