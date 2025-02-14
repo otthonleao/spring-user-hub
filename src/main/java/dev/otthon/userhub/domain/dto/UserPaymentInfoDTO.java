@@ -1,13 +1,13 @@
-package dev.otthon.userhub.dto;
+package dev.otthon.userhub.domain.dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import dev.otthon.userhub.model.SubscriptionType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
@@ -15,16 +15,15 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class UserDTO {
+public class UserPaymentInfoDTO {
 
     private Long id;
-    private String name;
-    private String email;
-    private String phone;
-    private String cpf;
-    private LocalDate dtSubscription = LocalDate.now();
-    private LocalDate dtExpiration;
-    private UserTypeDTO userType;
-    private SubscriptionType subscriptionType;
+    private String cardNumber;
+    private Long cardExpirationMonth;
+    private Long cardExpirationYear;
+    private String cardSecurityCode;
+    private BigDecimal price;
+    private LocalDate dtPayment;
+    private UserDTO user;
 
 }

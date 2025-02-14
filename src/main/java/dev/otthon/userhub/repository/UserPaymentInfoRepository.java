@@ -1,6 +1,6 @@
 package dev.otthon.userhub.repository;
 
-import dev.otthon.userhub.model.UserPaymentInfo;
+import dev.otthon.userhub.domain.model.UserPaymentInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package dev.otthon.userhub.model;
+package dev.otthon.userhub.domain.model;
 
 import jakarta.persistence.*;
 import lombok.*;
