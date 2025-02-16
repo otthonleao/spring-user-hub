@@ -22,7 +22,7 @@ public class UserDTO {
     private String email;
     private String phone;
     private String cpf;
-    private LocalDate dtSubscription = LocalDate.now();
+    private LocalDate dtSubscription;
     private LocalDate dtExpiration;
     private UserTypeDTO userType;
     private SubscriptionType subscriptionType;

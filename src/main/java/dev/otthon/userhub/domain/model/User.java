@@ -33,6 +33,7 @@ public class User implements Serializable {
 
     private String phone;
 
+    @Column(name = "cpf", unique = true, nullable = false, length = 11)
     private String cpf;
 
     @Column(name = "dt_subscription")
