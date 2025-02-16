@@ -16,4 +16,6 @@ public interface SubscriptionTypeService {
     void deleteById(Long id);
 
     SubscriptionTypeDTO update(Long id, CreateSubscriptionTypeRequest request);
+
+    SubscriptionTypeDTO parcialUpdatePatch(Long id, CreateSubscriptionTypeRequest request);
 }

@@ -21,7 +21,6 @@ public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
     private final SubscriptionTypeRepository subscriptionTypeRepository;
     private final SubscriptionTypeMapper SubscriptionTypeMapper;
 
-
     @Override
     @Transactional
     public SubscriptionTypeDTO create(CreateSubscriptionTypeRequest request) {
@@ -88,6 +87,28 @@ public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
 
         return SubscriptionTypeMapper.fromEntityToResponse(updated);
 
+    }
+
+    @Override
+    @Transactional
+    public SubscriptionTypeDTO parcialUpdatePatch(Long id, CreateSubscriptionTypeRequest request) {
+        if (!subscriptionTypeRepository.existsById(id)) {
+            throw new ResourceNotFoundException(
+                    String.format("Subscription Type with id %d not found", id)
+            );
+        }
+
+        SubscriptionType fromRequest = SubscriptionTypeMapper.fromRequestToEntity(request);
+
+        SubscriptionType toSave = subscriptionTypeRepository.getReferenceById(id);
+        toSave.setName(fromRequest.getName() != null ? fromRequest.getName() : toSave.getName());
+        toSave.setAccessMonth(fromRequest.getAccessMonth() != null ? fromRequest.getAccessMonth() : toSave.getAccessMonth());
+        toSave.setPrice(fromRequest.getPrice() != null ? fromRequest.getPrice() : toSave.getPrice());
+        toSave.setProductKey(fromRequest.getProductKey() != null ? fromRequest.getProductKey() : toSave.getProductKey());
+
+        SubscriptionType updated = subscriptionTypeRepository.save(toSave);
+
+        return SubscriptionTypeMapper.fromEntityToResponse(updated);
     }
 
 }
