@@ -21,6 +21,7 @@ public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
     private final SubscriptionTypeRepository subscriptionTypeRepository;
     private final SubscriptionTypeMapper SubscriptionTypeMapper;
 
+
     @Override
     @Transactional
     public SubscriptionTypeDTO create(CreateSubscriptionTypeRequest request) {
@@ -64,6 +65,29 @@ public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
                     String.format("Subscription Type with id %d cannot be deleted due to data integrity constraints", id), cause
             );
         }
+    }
+
+    @Override
+    @Transactional
+    public SubscriptionTypeDTO update(Long id, CreateSubscriptionTypeRequest request) {
+        if (!subscriptionTypeRepository.existsById(id)) {
+            throw new ResourceNotFoundException(
+                    String.format("Subscription Type with id %d not found", id)
+            );
+        }
+
+        SubscriptionType fromRequest = SubscriptionTypeMapper.fromRequestToEntity(request);
+
+        SubscriptionType toSave = subscriptionTypeRepository.getReferenceById(id);
+        toSave.setName(fromRequest.getName());
+        toSave.setAccessMonth(fromRequest.getAccessMonth());
+        toSave.setPrice(fromRequest.getPrice());
+        toSave.setProductKey(fromRequest.getProductKey());
+
+        SubscriptionType updated = subscriptionTypeRepository.save(toSave);
+
+        return SubscriptionTypeMapper.fromEntityToResponse(updated);
+
     }
 
 }

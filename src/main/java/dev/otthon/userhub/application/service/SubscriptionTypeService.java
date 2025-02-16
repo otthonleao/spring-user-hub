@@ -14,4 +14,6 @@ public interface SubscriptionTypeService {
     SubscriptionTypeDTO getById(Long id);
 
     void deleteById(Long id);
+
+    SubscriptionTypeDTO update(Long id, CreateSubscriptionTypeRequest request);
 }

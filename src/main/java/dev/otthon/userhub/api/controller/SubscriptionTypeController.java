@@ -57,4 +57,13 @@ public class SubscriptionTypeController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping(ApiRoutes.SUBSCRIPTION_TYPE + "/{id}")
+    public ResponseEntity<SubscriptionTypeDTO> update(@PathVariable Long id, @RequestBody CreateSubscriptionTypeRequest request) {
+        SubscriptionTypeDTO updated = service.update(id, request);
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .buildAndExpand(updated.getId())
+                .toUri();
+        return ResponseEntity.ok().header(HttpHeaders.LOCATION, uri.toString()).body(updated);
+    }
 }
