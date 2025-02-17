@@ -7,5 +7,6 @@ import lombok.NoArgsConstructor;
 public class ApiRoutes {
 
     public static final String SUBSCRIPTION_TYPE = "/subscription-type";
+    public static final String USERS = "/users";
 
 }
