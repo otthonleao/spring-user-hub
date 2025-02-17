@@ -44,7 +44,7 @@ public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
     public SubscriptionTypeDTO getById(Long id) {
         SubscriptionType response = subscriptionTypeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        String.format("Subscription Type with id %d not found", id)
+                        "Subscription Type with id %d not found. Type: %s".formatted(id, SubscriptionType.class.getSimpleName())
                 ));
         return SubscriptionTypeMapper.fromEntityToResponse(response);
     }
@@ -54,7 +54,7 @@ public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
     public void deleteById(Long id) {
         if (!subscriptionTypeRepository.existsById(id)) {
             throw new ResourceNotFoundException(
-                    String.format("Subscription Type with id %d not found", id)
+                    "Subscription Type with id %d not found. Type: %s".formatted(id, SubscriptionType.class.getSimpleName())
             );
         }
 
@@ -62,7 +62,7 @@ public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
             subscriptionTypeRepository.deleteById(id);
         } catch (DataIntegrityViolationException cause) {
             throw new ConstraintViolationException(
-                    String.format("Subscription Type with id %d cannot be deleted due to data integrity constraints", id), cause
+                    String.format("Subscription Type with id %d cannot be deleted due to data integrity constraints. Type: %s", id, SubscriptionType.class.getSimpleName()), cause
             );
         }
     }
@@ -72,7 +72,7 @@ public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
     public SubscriptionTypeDTO update(Long id, UpdateSubscriptionTypeRequest request) {
         if (!subscriptionTypeRepository.existsById(id)) {
             throw new ResourceNotFoundException(
-                    String.format("Subscription Type with id %d not found", id)
+                    "Subscription Type with id %d not found. Type: %s".formatted(id, SubscriptionType.class.getSimpleName())
             );
         }
 
@@ -95,7 +95,7 @@ public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
     public SubscriptionTypeDTO parcialUpdatePatch(Long id, UpdateSubscriptionTypeRequest request) {
         if (!subscriptionTypeRepository.existsById(id)) {
             throw new ResourceNotFoundException(
-                    String.format("Subscription Type with id %d not found", id)
+                    "Subscription Type with id %d not found. Type: %s".formatted(id, SubscriptionType.class.getSimpleName())
             );
         }
 
