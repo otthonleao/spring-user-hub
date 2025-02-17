@@ -4,6 +4,7 @@ import dev.otthon.userhub.core.exception.ConstraintViolationException;
 import dev.otthon.userhub.core.exception.ResourceNotFoundException;
 import dev.otthon.userhub.domain.dto.SubscriptionTypeDTO;
 import dev.otthon.userhub.domain.dto.request.CreateSubscriptionTypeRequest;
+import dev.otthon.userhub.domain.dto.request.UpdateSubscriptionTypeRequest;
 import dev.otthon.userhub.domain.mapper.SubscriptionTypeMapper;
 import dev.otthon.userhub.domain.model.SubscriptionType;
 import dev.otthon.userhub.repository.SubscriptionTypeRepository;
@@ -68,7 +69,7 @@ public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
 
     @Override
     @Transactional
-    public SubscriptionTypeDTO update(Long id, CreateSubscriptionTypeRequest request) {
+    public SubscriptionTypeDTO update(Long id, UpdateSubscriptionTypeRequest request) {
         if (!subscriptionTypeRepository.existsById(id)) {
             throw new ResourceNotFoundException(
                     String.format("Subscription Type with id %d not found", id)
@@ -91,7 +92,7 @@ public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
 
     @Override
     @Transactional
-    public SubscriptionTypeDTO parcialUpdatePatch(Long id, CreateSubscriptionTypeRequest request) {
+    public SubscriptionTypeDTO parcialUpdatePatch(Long id, UpdateSubscriptionTypeRequest request) {
         if (!subscriptionTypeRepository.existsById(id)) {
             throw new ResourceNotFoundException(
                     String.format("Subscription Type with id %d not found", id)
