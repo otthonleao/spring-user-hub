@@ -1,0 +1,40 @@
+GET http://localhost:8082/user-hub/subscription-type
+
+###
+GET http://localhost:8082/user-hub/subscription-type/1
+
+###
+GET http://localhost:8082/user-hub/subscription-type/216165156165
+
+###
+POST http://localhost:8082/user-hub/subscription-type
+Content-Type: application/json
+
+{
+	"name": "OTTHON LEÃO",
+	"access_month": 12,
+	"price": 300.00,
+	"product_key": "TRI-2025"
+}
+
+###
+PUT http://localhost:8082/user-hub/subscription-type/1
+Content-Type: application/json
+
+{
+	"name": "PLANO MENSAL",
+	"access_month": 1,
+	"price": 150.00,
+	"product_key": "MONTH-2025"
+}
+
+###
+PATCH http://localhost:8082/user-hub/subscription-type/1
+Content-Type: application/json
+
+{
+	"price": 130.00
+}
+
+###
+DELETE http://localhost:8082/user-hub/users/4

@@ -1,0 +1,31 @@
+POST http://localhost:8082/user-hub/users
+Content-Type: application/json
+
+{
+	"name": "Otthon Leão",
+	"cpf": "59673045097",
+	"email": "create_user@email.com",
+	"phone": "19989205616",
+	"user_type": 3
+}
+
+###
+
+GET http://localhost:8082/user-hub/users
+
+###
+
+GET http://localhost:8082/user-hub/users/1
+
+###
+DELETE http://localhost:8082/user-hub/users/15
+
+###
+PUT http://localhost:8082/user-hub/users/1
+Content-Type: application/json
+
+{
+  "email": "otthon@email.com",
+  "phone": "19989205588",
+  "user_type": 2
+}
