@@ -14,6 +14,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -61,6 +62,17 @@ public class UserController {
     @PutMapping(ApiRoutes.USERS + "/{id}")
     public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody final UserUpdateRequest request) {
         UserDTO updated = service.update(id, request);
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(updated.getId())
+                .toUri();
+        return ResponseEntity.created(uri).body(updated);
+    }
+
+    @PatchMapping(ApiRoutes.USERS + "/{id}")
+    public ResponseEntity<UserDTO> updatePartial(@PathVariable Long id, @Valid @RequestBody Map<String, Object> request) {
+        UserDTO updated = service.updatePatch(id, request);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")

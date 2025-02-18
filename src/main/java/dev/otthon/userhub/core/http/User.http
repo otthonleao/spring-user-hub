@@ -29,3 +29,12 @@ Content-Type: application/json
   "phone": "19989205588",
   "user_type": 2
 }
+
+###
+PATCH http://localhost:8082/user-hub/users/1
+Content-Type: application/json
+
+{
+  "name": "Otthon R P Leão",
+  "user_type": 1
+}

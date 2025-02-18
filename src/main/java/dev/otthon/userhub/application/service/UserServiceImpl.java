@@ -1,5 +1,6 @@
 package dev.otthon.userhub.application.service;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.otthon.userhub.core.exception.ConstraintViolationException;
 import dev.otthon.userhub.core.exception.ResourceNotFoundException;
@@ -13,13 +14,14 @@ import dev.otthon.userhub.domain.model.UserType;
 import dev.otthon.userhub.repository.UserRepository;
 import dev.otthon.userhub.repository.UserTypeRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.web.servlet.FrameworkServlet;
 
 import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +33,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserTypeRepository userTypeRepository;
     private final UserMapper userMapper;
+    private final FrameworkServlet frameworkServlet;
 
     @Override
     @Transactional
@@ -89,6 +92,41 @@ public class UserServiceImpl implements UserService {
         }
         return userMapper.fromEntityToResponse(userRepository.save(entity));
 
+    }
+
+    @Override
+    @Transactional
+    public UserDTO updatePatch(Long id, Map<String, Object> request) {
+
+        User entity = findUserById(id);
+        applyUpdate(request, entity);
+
+        return userMapper.fromEntityToResponse(userRepository.save(entity));
+    }
+
+    private void applyUpdate(Map<String, Object> sourceField, User targetEntity) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        Object userTypeValue = sourceField.remove("user_type");
+
+        User partialUpdate = objectMapper.convertValue(sourceField, User.class);
+
+        ReflectionUtils.doWithFields(User.class, field -> {
+            if (!java.lang.reflect.Modifier.isStatic(field.getModifiers())) {
+                field.setAccessible(true);
+                Object value = ReflectionUtils.getField(field, partialUpdate);
+                if (value != null) {
+                    ReflectionUtils.setField(field, targetEntity, value);
+                }
+            }
+        });
+
+        if (userTypeValue != null) {
+            Long userTypeId = ((Number) userTypeValue).longValue();
+            UserType userType = findUserTypeById(userTypeId);
+            targetEntity.setUserType(userType);
+        }
     }
 
     private UserType findUserTypeById(Long id) {

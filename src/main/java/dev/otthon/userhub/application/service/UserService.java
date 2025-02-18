@@ -3,8 +3,10 @@ package dev.otthon.userhub.application.service;
 import dev.otthon.userhub.domain.dto.UserDTO;
 import dev.otthon.userhub.domain.dto.request.UserRequest;
 import dev.otthon.userhub.domain.dto.request.UserUpdateRequest;
+import jakarta.validation.Valid;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
 
@@ -18,4 +20,5 @@ public interface UserService {
 
     UserDTO update(Long id, UserUpdateRequest request);
 
+    UserDTO updatePatch(Long id, @Valid Map<String, Object> request);
 }

@@ -1,5 +1,6 @@
 package dev.otthon.userhub.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -42,6 +43,7 @@ public class User implements Serializable {
     @Column(name = "dt_expiration")
     private LocalDate dtExpiration;
 
+    @JsonProperty("user_type")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_type_id")
     private UserType userType;
