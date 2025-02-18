@@ -1,9 +1,11 @@
 package dev.otthon.userhub.application.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.otthon.userhub.core.exception.ConstraintViolationException;
 import dev.otthon.userhub.core.exception.ResourceNotFoundException;
 import dev.otthon.userhub.domain.dto.UserDTO;
 import dev.otthon.userhub.domain.dto.request.UserRequest;
+import dev.otthon.userhub.domain.dto.request.UserUpdateRequest;
 import dev.otthon.userhub.domain.mapper.UserMapper;
 import dev.otthon.userhub.domain.model.SubscriptionType;
 import dev.otthon.userhub.domain.model.User;
@@ -11,12 +13,16 @@ import dev.otthon.userhub.domain.model.UserType;
 import dev.otthon.userhub.repository.UserRepository;
 import dev.otthon.userhub.repository.UserTypeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -68,6 +74,21 @@ public class UserServiceImpl implements UserService {
     public UserDTO getById(Long id) {
         User response = findUserById(id);
         return userMapper.fromEntityToResponse(response);
+    }
+
+    @Override
+    @Transactional
+    public UserDTO update(Long id, UserUpdateRequest request) {
+
+        User entity = findUserById(id);
+        userMapper.fromRequestToUpdate(request, entity);
+
+        if (request.getUserType() != null) {
+            UserType userType = findUserTypeById(request.getUserType());
+            entity.setUserType(userType);
+        }
+        return userMapper.fromEntityToResponse(userRepository.save(entity));
+
     }
 
     private UserType findUserTypeById(Long id) {

@@ -4,6 +4,7 @@ import dev.otthon.userhub.api.routes.ApiRoutes;
 import dev.otthon.userhub.application.service.UserService;
 import dev.otthon.userhub.domain.dto.UserDTO;
 import dev.otthon.userhub.domain.dto.request.UserRequest;
+import dev.otthon.userhub.domain.dto.request.UserUpdateRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -55,6 +56,17 @@ public class UserController {
                 .buildAndExpand(response.getId())
                 .toUri();
         return ResponseEntity.ok().header(HttpHeaders.LOCATION, uri.toString()).body(response);
+    }
+
+    @PutMapping(ApiRoutes.USERS + "/{id}")
+    public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody final UserUpdateRequest request) {
+        UserDTO updated = service.update(id, request);
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(updated.getId())
+                .toUri();
+        return ResponseEntity.created(uri).body(updated);
     }
 
 }

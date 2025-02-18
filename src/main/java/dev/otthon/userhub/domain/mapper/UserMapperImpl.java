@@ -2,6 +2,7 @@ package dev.otthon.userhub.domain.mapper;
 
 import dev.otthon.userhub.domain.dto.UserDTO;
 import dev.otthon.userhub.domain.dto.request.UserRequest;
+import dev.otthon.userhub.domain.dto.request.UserUpdateRequest;
 import dev.otthon.userhub.domain.model.User;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -22,4 +23,11 @@ public class UserMapperImpl implements UserMapper {
     public UserDTO fromEntityToResponse(User entity) {
         return modelMapper.map(entity, UserDTO.class);
     }
+
+    @Override
+    public void fromRequestToUpdate(UserUpdateRequest request, User entity) {
+        modelMapper.getConfiguration().setSkipNullEnabled(true);
+        modelMapper.map(request, entity);
+    }
+
 }
